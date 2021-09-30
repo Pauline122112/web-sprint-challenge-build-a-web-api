@@ -1,9 +1,30 @@
-const express = require('express');
-const server = express();
+const express = require('express')
+// const { logger } = require('./projects/projects-middleware')
+const helmet = require('helmet')
+const cors = require('cors')
 
-// Configure your server here
-// Build your actions router in /api/actions/actions-router.js
-// Build your projects router in /api/projects/projects-router.js
-// Do NOT `server.listen()` inside this file!
+const server = express()
 
-module.exports = server;
+server.use(express.json())
+
+server.use(cors())
+// server.use(logger)
+server.use(helmet())
+
+server.get('/', (req, res) => {
+    res.send('<h1>API sprint challenge<h1>')
+})
+
+server.get('/api', (req, res) => {
+    res.json({ message: 'Api is working'})
+})
+
+server.use((err, req, res, next) => {
+    res.status(500).json({
+        error: err.message,
+        message: 'Something is wrong',
+    })
+})
+
+
+module.exports = server
