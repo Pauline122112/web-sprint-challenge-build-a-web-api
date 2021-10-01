@@ -38,17 +38,18 @@ const validateProject = (req, res, next) => {
 			!description ||
 			!completed ||
 			!name.trim() ||
-			!description.trim()
+			!description.trim()||
+            !completed.trim()
 		) {
 			res.status(400).json({
 				message:
-					"missing required name, description or completion (enter 1 or 0) status field",
+					"missing required name, description or completion",
 			});
 		} else {
 			next();
 		}
 	} catch (err) {
-		next(err);
+		next(err)
 	}
 };
 
