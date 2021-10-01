@@ -1,30 +1,37 @@
-const express = require('express')
-// const { logger } = require('./projects/projects-middleware')
-const helmet = require('helmet')
-const cors = require('cors')
+const express = require("express");
+const { logger } = require("./projects/projects-middleware");
 
-const server = express()
+const cors = require("cors"); //MIDDLEWARE
+const projectsRouter = require("./projects/projects-router");
+// const actionsRouter = require("./actions/actions-router");
 
-server.use(express.json())
+// Configured server
 
-server.use(cors())
-// server.use(logger)
-server.use(helmet())
+const server = require("express")();
 
-server.get('/', (req, res) => {
-    res.send('<h1>API sprint challenge<h1>')
-})
+server.use(express.json());
 
-server.get('/api', (req, res) => {
-    res.json({ message: 'Api is working'})
-})
+server.use(cors());
+server.use(logger);
+
+
+server.use("/api/projects", projectsRouter);
+// server.use("/api/actions", actionsRouter);
+
+server.get("/", (req, res) => {
+	res.send(`<h1>Lambda Projects</h1>`);
+});
+
+server.get("/api", (req, res) => {
+	res.json({ message: "Api is working" });
+});
 
 server.use((err, req, res, next) => {
-    res.status(500).json({
-        error: err.message,
-        message: 'Something is wrong',
-    })
-})
+	// eslint-disable-line
+	res.status(500).json({
+		error: err.message,
+		message: "Something is wrong",
+	});
+});
 
-
-module.exports = server
+module.exports = server;
