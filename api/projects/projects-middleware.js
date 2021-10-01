@@ -13,21 +13,22 @@ function logger(req, res, next) {
 //Created a database project function
 const databaseProject = async (req, res, next) => {
 	try {
-		const project = await Projects.get(req.params.id);
-		if (!project) {
-			res.status(404).json({
-				message: `id not found`,
-			});
+		const { id } = req.params
+		const project = await Projects.get(id)
+		if (project) {
+			req.project = project
+			next()
 		} else {
-			req.project = project;
-			next();
+			next({
+				status: 404,
+				message: 'project was not found',
+			})
 		}
-	} catch (err) {
-		res.status(500).json({
-			message: "problem finding user",
-		});
+		} catch (err) {
+			next(err)
+		}
 	}
-}
+
 
 //Created a validation function
 const validateProject = (req, res, next) => {

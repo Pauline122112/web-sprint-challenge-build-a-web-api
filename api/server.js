@@ -1,9 +1,9 @@
-const express = require("express");
+const express = require("express")
 const { logger } = require("./projects/projects-middleware")
 const helmet = require('helmet')
 const cors = require("cors"); //MIDDLEWARE
 const projectsRouter = require("./projects/projects-router")
-// const actionsRouter = require("./actions/actions-router");
+const actionsRouter = require("./actions/actions-router")
 
 // Configured server
 
@@ -16,11 +16,11 @@ server.use(helmet())
 server.use(logger)
 
 
-server.use("/api/projects", projectsRouter);
-// server.use("/api/actions", actionsRouter);
+server.use("/api/projects", projectsRouter)
+server.use("/api/actions", actionsRouter)
 
 server.get("/", (req, res) => {
-	res.send(`<h1>Lambda Projects</h1>`);
+	res.send(`<h1>Lambda Projects</h1>`)
 });
 
 server.get("/api", (req, res) => {
@@ -35,4 +35,4 @@ server.use((err, req, res, next) => {
 	});
 });
 
-module.exports = server;
+module.exports = server

@@ -1,5 +1,5 @@
 // Write your "projects" router here!
-const express = require("express");
+const express = require("express")
 const Projects = require("./projects-model");
 const { databaseProject, validateProject } = require("./projects-middleware");
 
@@ -35,10 +35,10 @@ router.get("/:id/actions", async (req, res, next) => {
 //POST
 
 router.post("/", (req, res, next) => {
-	const { name, description, completed } = req.body;
-	if (!name || !description) {
+	const { name, description, completed } = req.body
+	if (!name || !description || !completed == null) {
 		res.status(400).json({
-			message: "Please provide the name and description for this project",
+			message: "Provide the name and description for this project",
 		})
 	} else {
 		Projects.insert({ name, description, completed })
@@ -53,13 +53,17 @@ router.post("/", (req, res, next) => {
 });
 
 //PUT
-router.put("/:id", validateProject, (req, res, next) => {
-	Projects.update(req.params.id, req.body)
+router.put("/:id", databaseProject, validateProject, (req, res, next) => {
+ Projects.update(req.params.id, {
+		name: req.name,
+		description: req.description,
+		completed: req.completed,
+ })
 		.then(() => {
-			return Projects.getById(req.params.id);
+			return Projects.get(req.params.id);
 		})
 		.then((project) => {
-			res.status(200).json(project);
+			res.json(project);
 		})
 		.catch(next);
 });
