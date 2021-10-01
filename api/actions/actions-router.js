@@ -2,7 +2,7 @@
 // Write your "projects" router here!
 const express = require("express");
 const Actions = require("../actions/actions-model");
-const { databaseActon, validateAction } = require('./actions-middlware')
+const { databaseAction, validateAction } = require('./actions-middlware')
 
 const router = express.Router();
 
@@ -19,7 +19,7 @@ router.get("/", (req, res, next) => {
 });
 
 //GET
-router.get("/:id", databaseActon, (req, res) => {
+router.get("/:id", databaseAction, (req, res) => {
 	res.status(200).json(req.action);
 });
 
@@ -35,7 +35,7 @@ router.post("/", validateAction, async (req, res, next) => {
 		});
 		res.status(201).json(newAction);
 	} catch (err) {
-		next(err)
+		next(err);
 	}
 })
 	
@@ -53,7 +53,7 @@ router.put("/:id", validateAction,(req, res, next) => {
 });
 
 //DELETE
-router.delete("/:id", databaseActon, (req, res, next) => {
+router.delete("/:id", databaseAction, (req, res, next) => {
 	console.log(req.theTruth);
 	Actions.remove(req.params.id)
 		.then(() => {
@@ -69,7 +69,9 @@ router.use((err, req, res, next) => {
 		customMessage: "something tragic inside projects router",
 		error: err.message,
 		stack: err.stack,
-	});
-});
+        
+	})
+    next()
+})
 
 module.exports = router;

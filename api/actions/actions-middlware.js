@@ -11,7 +11,7 @@ function logger(req, res, next) {
 }
 
 //Created a database action function
-async function databaseActon(req, res, next) {
+async function databaseAction(req, res, next) {
 	try {
 		const action = await Actions.get(req.params.id);
 		if (!action) {
@@ -55,6 +55,6 @@ async function databaseActon(req, res, next) {
 
 module.exports = {
 	logger,
-	databaseActon,
+	databaseAction,
 	validateAction,
 };
