@@ -1,18 +1,19 @@
 const express = require("express");
-const { logger } = require("./projects/projects-middleware");
-
+const { logger } = require("./projects/projects-middleware")
+const helmet = require('helmet')
 const cors = require("cors"); //MIDDLEWARE
-const projectsRouter = require("./projects/projects-router");
+const projectsRouter = require("./projects/projects-router")
 // const actionsRouter = require("./actions/actions-router");
 
 // Configured server
 
-const server = require("express")();
+const server = require("express")()
 
-server.use(express.json());
+server.use(express.json())
 
-server.use(cors());
-server.use(logger);
+server.use(cors())
+server.use(helmet())
+server.use(logger)
 
 
 server.use("/api/projects", projectsRouter);

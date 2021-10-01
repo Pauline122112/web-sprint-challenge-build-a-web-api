@@ -31,21 +31,11 @@ async function databaseProject(req, res, next) {
 
 //Created a validation function
 function validateProject(res, req, next) {
-	const { name, description, completed } = req.body;
-	if (!name || !name.trim()) {
-		res.status(400).json({
-			message: "missing required name and field",
-		});
-	} else if (!description || !description.trim()) {
-		res.status(400).json({
-			message: "missing required description field",
-		});
-	} else {
-		req.name = name.trim();
-		req.description = description.trim();
-		req.completed = completed.trim();
-		next();
-	}
+if (!req.body.name || !req.body.description || req.body.completed == null) {
+	next({ status: 400, message: "missing required text field" });
+} else {
+	next();
+}
 }
 
 module.exports = {
