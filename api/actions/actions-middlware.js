@@ -11,7 +11,7 @@ function logger(req, res, next) {
 }
 
 //Created a database action function
-async function databaseAction(req, res, next) {
+const databaseAction = async (req, res, next) => {
 	try {
 		const action = await Actions.get(req.params.id);
 		if (!action) {
@@ -30,7 +30,7 @@ async function databaseAction(req, res, next) {
 }
 
 //Created a validation function
- async function validateAction(req, res, next) {
+const validateAction = async (req, res, next) => {
 		const { project_id, description, notes, completed } = req.body;
 		if (!project_id || !project_id) {
 			res.status(400).json({
