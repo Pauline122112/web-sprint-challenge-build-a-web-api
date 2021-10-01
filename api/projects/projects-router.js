@@ -1,36 +1,36 @@
 // Write your "projects" router here!
 const express = require("express")
-const Projects = require("./projects-model");
-const { databaseProject, validateProject } = require("./projects-middleware");
+const Projects = require("./projects-model")
+const { databaseProject, validateProject } = require("./projects-middleware")
 
-const router = express.Router();
+const router = express.Router()
 
-//check http://localhost:9000/api/projects to test work
+//check http://localhost:5000/api/projects to test work
 //Using httpie or Postman
 
 //GET-
 router.get("/", (req, res, next) => {
 	Projects.get()
 		.then((projects) => {
-			res.status(200).json(projects);
+			res.status(200).json(projects)
 		})
-		.catch(next);
+		.catch(next)
 });
 
 //GET
 router.get("/:id", databaseProject, (req, res) => {
-	res.status(200).json(req.project);
-});
+	res.status(200).json(req.project)
+})
 
 //GET
 router.get("/:id/actions", async (req, res, next) => {
 	try {
-		const action = await Projects.getProjectActions(req.params.id);
+		const action = await Projects.getProjectActions(req.params.id)
 		res.json(action);
 	} catch (err) {
-		next(err);
+		next(err)
 	}
-});
+})
 
 //POST
 
@@ -43,10 +43,10 @@ router.post("/", (req, res, next) => {
 	} else {
 		Projects.insert({ name, description, completed })
 			.then(({ id }) => {
-				return Projects.get(id);
+				return Projects.get(id)
 			})
 			.then((project) => {
-				res.status(201).json(project);
+				res.status(201).json(project)
 			})
 			.catch(next)
 	}
@@ -60,23 +60,23 @@ router.put("/:id", databaseProject, validateProject, (req, res, next) => {
 		completed: req.completed,
  })
 		.then(() => {
-			return Projects.get(req.params.id);
+			return Projects.get(req.params.id)
 		})
 		.then((project) => {
 			res.json(project);
 		})
-		.catch(next);
-});
+		.catch(next)
+})
 
 //DELETE
 router.delete("/:id", databaseProject, (req, res, next) => {
 	console.log(req.theTruth);
 	Projects.remove(req.params.id)
 		.then(() => {
-			res.status(200).json({ message: "The project has been demolished" });
+			res.status(200).json({ message: "The project has been demolished" })
 		})
-		.catch(next);
-});
+		.catch(next)
+})
 
 //For errors only
 router.use((err, req, res, next) => {
@@ -85,7 +85,7 @@ router.use((err, req, res, next) => {
 		customMessage: "something tragic inside projects router",
 		error: err.message,
 		stack: err.stack,
-	});
-});
+	})
+})
 
-module.exports = router;
+module.exports = router

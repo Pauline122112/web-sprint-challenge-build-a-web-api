@@ -1,4 +1,3 @@
-// add middlewares here related to actions
 const Actions = require("../actions/actions-model");
 
 //Added a logger but unsure if it's actually needed
@@ -52,7 +51,8 @@ const validateAction = async (req, res, next) => {
 			next();
 		}
  }
-
+ 
+//exporting functions to be used for router
 module.exports = {
 	logger,
 	databaseAction,

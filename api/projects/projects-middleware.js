@@ -1,4 +1,3 @@
-// add middlewares here related to projects
 const Projects = require("../projects/projects-model");
 
 //Added a logger but unsure if it's actually needed
@@ -54,7 +53,7 @@ const validateProject = (req, res, next) => {
 	}
 };
 
-
+//exporting functions to be used for router
 module.exports = {
 	logger,
 	databaseProject,

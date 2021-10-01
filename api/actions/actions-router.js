@@ -1,12 +1,11 @@
-// Write your "actions" router here!
-// Write your "projects" router here!
 const express = require("express");
 const Actions = require("../actions/actions-model");
 const { databaseAction, validateAction } = require('./actions-middlware')
 
 const router = express.Router();
 
-//check http://localhost:5000/api/projects to test work
+//check http://localhost:5000/api/actions/:id to test work
+//Using httpie or Postman
 
 //GET-
 router.get("/", (req, res, next) => {
@@ -22,7 +21,7 @@ router.get("/:id", databaseAction, (req, res) => {
 	res.status(200).json(req.action)
 });
 
-// //POST
+//POST
 
 router.post("/", validateAction, async (req, res, next) => {
 	try {
@@ -57,16 +56,6 @@ router.put("/:id", validateAction, databaseAction,(req, res, next) => {
 
 })
 
-
-        // const changes = req.body;
-		// 		Actions.update(req.params.id, changes, { name: req.name })
-		// 			.then(() => {
-		// 				return Actions.getById(req.params.id, changes);
-		// 			})
-		// 			.then((action) => {
-		// 				res.status(200).json(action);
-		// 			})
-		// 			.catch(next);
 //DELETE
 router.delete("/:id", databaseAction, (req, res, next) => {
 	console.log(req.theTruth);
@@ -89,4 +78,5 @@ router.use((err, req, res, next) => {
     next()
 })
 
+//export the router
 module.exports = router;

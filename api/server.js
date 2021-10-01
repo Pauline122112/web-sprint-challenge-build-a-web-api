@@ -1,7 +1,7 @@
 const express = require("express")
 const { logger } = require("./projects/projects-middleware")
-const helmet = require('helmet')
-const cors = require("cors"); //MIDDLEWARE
+const helmet = require('helmet')//MIDDLEWARE
+const cors = require("cors") //MIDDLEWARE
 const projectsRouter = require("./projects/projects-router")
 const actionsRouter = require("./actions/actions-router")
 
