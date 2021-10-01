@@ -31,27 +31,19 @@ const databaseProject = async (req, res, next) => {
 
 //Created a validation function
 const validateProject = (req, res, next) => {
-	const { name, description, completed } = req.body;
-	try {
-		if (
-			!name ||
-			!description ||
-			!completed ||
-			!name.trim() ||
-			!description.trim()||
-            !completed.trim()
-		) {
-			res.status(400).json({
-				message:
-					"missing required name, description or completion",
-			});
-		} else {
-			next();
-		}
-	} catch (err) {
-		next(err)
-	}
-};
+ const { name, description, completed } = req.body
+ if (!name || !name.trim()) {
+		res.status(400).json({
+			message: "missing required name field",
+		})
+ }
+ else {
+		req.name = name.trim()
+		req.description = description.trim()
+		req.completed = completed
+		next()
+ }
+}
 
 //exporting functions to be used for router
 module.exports = {
