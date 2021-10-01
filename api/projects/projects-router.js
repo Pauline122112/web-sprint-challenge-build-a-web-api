@@ -34,10 +34,12 @@ router.get("/:id/actions", async (req, res, next) => {
 
 //POST
 
-router.post("/", validateProject, async (req, res, next) => {
- Projects.insert(req.body).then((project) => {
-		res.status(201).json(project);
- })
+router.post("/", validateProject, (req, res, next) => {
+ Projects.insert({ name: req.name, description: req.description })
+        .then((newProject) => {
+            res.status(201).json(newProject);
+        })
+        .catch(next);
 })
 
 //PUT

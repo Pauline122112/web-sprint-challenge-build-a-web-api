@@ -11,7 +11,7 @@ function logger(req, res, next) {
 }
 
 //Created a database project function
-async function databaseProject(req, res, next) {
+const databaseProject = async (req, res, next) => {
 	try {
 		const project = await Projects.get(req.params.id);
 		if (!project) {
@@ -30,13 +30,28 @@ async function databaseProject(req, res, next) {
 }
 
 //Created a validation function
-function validateProject(res, req, next) {
-if (!req.body.name || !req.body.description || req.body.completed == null) {
-	next({ status: 400, message: "missing required text field" });
-} else {
-	next();
-}
-}
+const validateProject = (req, res, next) => {
+	const { name, description, completed } = req.body;
+	try {
+		if (
+			!name ||
+			!description ||
+			!completed ||
+			!name.trim() ||
+			!description.trim()
+		) {
+			res.status(400).json({
+				message:
+					"missing required name, description or completion (enter 1 or 0) status field",
+			});
+		} else {
+			next();
+		}
+	} catch (err) {
+		next(err);
+	}
+};
+
 
 module.exports = {
 	logger,
