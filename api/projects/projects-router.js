@@ -34,13 +34,23 @@ router.get("/:id/actions", async (req, res, next) => {
 
 //POST
 
-router.post("/", validateProject, (req, res, next) => {
- Projects.insert({ name: req.name, description: req.description })
-        .then((newProject) => {
-            res.status(201).json(newProject);
-        })
-        .catch(next);
-})
+router.post("/", (req, res, next) => {
+	const { name, description, completed } = req.body;
+	if (!name || !description) {
+		res.status(400).json({
+			message: "Please provide the name and description for this project",
+		})
+	} else {
+		Projects.insert({ name, description, completed })
+			.then(({ id }) => {
+				return Projects.get(id);
+			})
+			.then((project) => {
+				res.status(201).json(project);
+			})
+			.catch(next)
+	}
+});
 
 //PUT
 router.put("/:id", validateProject, (req, res, next) => {
