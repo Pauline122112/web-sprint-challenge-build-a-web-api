@@ -30,19 +30,28 @@ async function databaseActon(req, res, next) {
 }
 
 //Created a validation function
-function validateAction(res, req, next) {
-	const { project_id, description, notes } = req.body;
-	if (!project_id && !description && !notes) {
-		res.status(400).json({
-			message: "Missing required project ID, description and name",
-		});
-	} else {
-		req.project_id = project_id;
-		req.description = description;
-		req.notes = notes;
-		next();
-	}
-}
+ async function validateAction(req, res, next) {
+		const { project_id, description, notes, completed } = req.body;
+		if (!project_id || !project_id) {
+			res.status(400).json({
+				message: "missing required project id",
+			});
+		} else if (!description || !description.trim()) {
+			res.status(400).json({
+				message: "missing required description field",
+			});
+		} else if (!notes || !notes.trim()) {
+			res.status(400).json({
+				message: "missing required notes field",
+			});
+		} else {
+			req.project_id = project_id;
+			req.description = description.trim();
+			req.notes = notes.trim();
+			req.completed = completed;
+			next();
+		}
+ }
 
 module.exports = {
 	logger,

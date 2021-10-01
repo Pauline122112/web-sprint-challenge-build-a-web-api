@@ -25,16 +25,23 @@ router.get("/:id", databaseActon, (req, res) => {
 
 // //POST
 
-router.post("/", validateAction, (req, res, next) => {
-	Actions.insert(req.body)
-		.then((action) => {
-			res.status(201).json(action);
-		})
-		.catch(next);
-});
+router.post("/", validateAction, async (req, res, next) => {
+	try {
+		const newAction = await Actions.insert({
+			project_id: req.project_id,
+			description: req.description,
+			notes: req.notes,
+			completed: req.completed,
+		});
+		res.status(201).json(newAction);
+	} catch (err) {
+		next(err)
+	}
+})
+	
 
 //PUT
-router.put("/:id", validateAction, (req, res, next) => {
+router.put("/:id", validateAction,(req, res, next) => {
 	Actions.update(req.params.id, req.body)
 		.then(() => {
 			return Actions.getById(req.params.id);
